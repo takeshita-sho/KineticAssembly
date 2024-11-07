@@ -1,4 +1,4 @@
-using Catalyst
+#=using Catalyst
 using DifferentialEquations
 
 """
@@ -166,3 +166,8 @@ function get_fc_rn(n::Int64)::ReactionSystem
     @named rn = ReactionSystem(rxs, t)
     return rn
 end
+=#
+
+using Flux
+
+print(relu.([1,2,3]))
