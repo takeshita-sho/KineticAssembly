@@ -169,5 +169,11 @@ end
 =#
 
 using Flux
+using Catalyst
 
-print(relu.([1,2,3]))
+forward_rates = [rx.rate for rx in reactions(rn)]
+
+#this penalty should work for homo and hetero rates
+penalty = sum(relu.((10*lr)-forward_rates)) + sum(relu.(forward_rates-10))
+
+
