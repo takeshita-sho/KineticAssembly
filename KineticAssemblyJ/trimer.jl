@@ -22,8 +22,8 @@ tspan = (0., .1) #time span
 
 #These params are for homorates
 #deltaG -20
-params = [:k1 => 50.0, :k2 => .0002, :k3 => 50.0, :k4 => 4.24e-12] # initial rates
-
+#params = [:k1 => 50.0, :k2 => .0002, :k3 => 50.0, :k4 => 4.24e-12] # initial rates
+params = [10.0,10.0]
 print(optim(trimer, tspan,params,u0))
 
 
