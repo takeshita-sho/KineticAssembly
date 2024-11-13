@@ -8,19 +8,16 @@ using Flux
 using SciMLSensitivity
 using OptimizationOptimJL
 
-# TODO: Try using lower lr and using like 10-100 iters
+# TODO: Try using lower lr
 # TODO: Try using forwarddiff and reversediff
-# TODO: Try calculating backward rates from forward rates - can just input only forward params and calculate backwards params each iteration
 
 #Catalyst,DifferentialEquations,Optimization,OptimizationOptimisers,ForwardDiff,Zygote,Flux,SciMLSensitivity,OptimizationOptimJL
 #for now just going to plug in max yield as lowest count monomer
-function optim(rn,tspan,p_init,u0) begin
+function optim(rn,tspan,p_init,u0,lr) begin
     init_rates = get_rates(p_init)
-    print(init_rates)
+    println(init_rates)
+    #println("Loss     Yield")
     prob = ODEProblem(rn, u0, tspan, init_rates)
-    # super hard coded the max yield - just gonna assume only monomers at start and can use minimum conc of monomers
-    max_yield = 100. # can change this later - this should determine max possible yield from the concentrations of all species -> can probably look a python code to see how this is calculated
-    lr = .01 # probably make this an input parameter
 
     #get total yield from end of simulation for loss
     function loss(p::AbstractVector{T}, _) where T
@@ -31,7 +28,7 @@ function optim(rn,tspan,p_init,u0) begin
         #so p is a vector of duals and so need to access value of each dual to get current parameters
         #rates = get_rates([i.value for i in p],n)
         rates = get_rates(p)
-
+        #println("Rates: ",rates)
         #Remaking ode with updated parameters
         #  see how rates being float vs dual affects results - tried and doesnt make a difference
         newprob = remake(prob; p=rates)
@@ -45,7 +42,7 @@ function optim(rn,tspan,p_init,u0) begin
         #Final value is very low for first iteration for some reason???
         #println("Final")
         #println(final)
-        yield = final#/max_yield
+        yield = final
         
         # println("Max yield")
         # println(max_yield)
@@ -64,19 +61,22 @@ function optim(rn,tspan,p_init,u0) begin
         loss = -yield + penalty
         # println("Loss")
         # println(loss)
+        #println(loss.value, " " ,yield.value)
         return loss # I think issue is type I am returning here
 
     end
     
-    
+    #optf = OptimizationFunction(loss, Optimization.AutoZygote())
     optf = OptimizationFunction(loss, Optimization.AutoForwardDiff())
     optprob = OptimizationProblem(optf, p_init)
     
-    # TODO: Use various built in solvers 
+    # TODO: Use various built in optimizers 
     # actually I dont think this does integration, just Optimization
     # This does not work if I give it an integration algorithm - so not taking derivative
     # Can try inputting a integration method to see if it uses it
-    sol = solve(optprob, OptimizationOptimisers.Adam(lr); maxiters=5000)
+    
+    #sol = solve(optprob, Optimization.LBFGS(); maxiters=10000)
+    sol = solve(optprob, OptimizationOptimisers.Adam(lr); maxiters=100000)
 
     return get_rates(sol.u)
 end
@@ -87,9 +87,15 @@ end
 function get_rates(forward_rates::Vector{T}; delta_G_kb_T::Float64=-20., C0::Float64=1e6) where T
     rates = Vector{T}()
     for (m,k_on) in enumerate(forward_rates)
-        push!(rates, k_on)
-        push!(rates, k_on * C0 * exp(m * delta_G_kb_T))
+        #push!(rates, k_on)
+        #push!(rates, k_on * C0 * exp(m * delta_G_kb_T))
+        rates = [rates; [k_on, k_on * C0 * exp(m * delta_G_kb_T)]]
     end
-    
-    return rates
+    #this is hardcoded too
+    return return Dict(
+        :k1 => rates[1],
+        :k2 => rates[2],
+        :k3 => rates[3],
+        :k4 => rates[4]
+    )
 end

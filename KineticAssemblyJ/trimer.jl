@@ -19,12 +19,13 @@ end
 u0 = [:A => 100.0, :B => 100.0, :C => 100.0, :AB => 0.0,
  :BC => 0.0, :AC => 0.0, :ABC => 0.0] #concentration
 tspan = (0., .1) #time span
+lr=.01
 
 #These params are for homorates
 #deltaG -20
 #params = [:k1 => 50.0, :k2 => .0002, :k3 => 50.0, :k4 => 4.24e-12] # initial rates
 params = [10.0,10.0]
-print(optim(trimer, tspan,params,u0))
+println(optim(trimer, tspan,params,u0,lr))
 
 
 
