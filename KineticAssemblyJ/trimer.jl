@@ -2,29 +2,23 @@ using Catalyst
 using DifferentialEquations
 using Plots
 include("./optim.jl")
-
+include("./ReactionNetwork.jl")
 # Can make this automatically create based on input n
 #This defines the system of the homo rate trimer
-trimer = @reaction_network begin
-    (k1,k2), A+B <--> AB
-    (k1,k2), A+C <--> AC
-    (k1,k2), B+C <--> BC
-    (k3,k4), AB+C <--> ABC
-    (k3,k4), AC+B <--> ABC
-    (k3,k4), BC+A <--> ABC   
-end
+trimer = get_fc_rn(3)
 
 
 # Define simulation settings
-u0 = [:A => 100.0, :B => 100.0, :C => 100.0, :AB => 0.0,
- :BC => 0.0, :AC => 0.0, :ABC => 0.0] #concentration
+monomer_conc = [100.0,100.0,100.0] #concentration
 tspan = (0., .1) #time span
+lr=.01
 
 #These params are for homorates
 #deltaG -20
 #params = [:k1 => 50.0, :k2 => .0002, :k3 => 50.0, :k4 => 4.24e-12] # initial rates
 params = [10.0,10.0]
-print(optim(trimer, tspan,params,u0))
+iters=100
+println(optim(trimer,tspan,params,monomer_conc,lr,iters))
 
 
 
