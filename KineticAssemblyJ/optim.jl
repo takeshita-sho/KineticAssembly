@@ -86,7 +86,7 @@ function get_rates(forward_rates::Vector{T},k_symbols; delta_G_kb_T::Float64=-20
         rates = [rates; [k_on, k_on * C0 * exp(m * delta_G_kb_T)]]
     end
 
-    return dict(zip(rates,k_symbols))
+    return Dict(zip(k_symbols,rates))
 end
 
 function get_species_conc(monomers)
