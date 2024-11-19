@@ -5,18 +5,18 @@ include("./optim.jl")
 include("./ReactionNetwork.jl")
 # Can make this automatically create based on input n
 #This defines the system of the homo rate trimer
-trimer = get_fc_rn(3)
+trimer = get_fc_rn(4)
 
 
 # Define simulation settings
-monomer_conc = [100.0,100.0,100.0] #concentration
+monomer_conc = [100.0,100.0,100.0,100.0] #concentration
 tspan = (0., .1) #time span
 lr=.01
 
 #These params are for homorates
 #deltaG -20
 #params = [:k1 => 50.0, :k2 => .0002, :k3 => 50.0, :k4 => 4.24e-12] # initial rates
-params = [10.0,10.0]
+params = [10.0,10.0,10.0]
 iters=100
 println(optim(trimer,tspan,params,monomer_conc,lr,iters))
 
