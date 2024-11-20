@@ -1,10 +1,36 @@
 using Catalyst
 using DifferentialEquations
 using Plots
+using Optimization
 include("./optim.jl")
 include("./ReactionNetwork.jl")
 # Can make this automatically create based on input n
 #This defines the system of the homo rate trimer
+tspan = (0., .1)
+lr=.01
+iters = 1000
+n=3
+AD = Optimization.AutoForwardDiff()
+#for n in 3:10
+println("$(n)mer")
+nmer = get_fc_rn(n)
+params = fill(10.0,n-1)
+monomer_conc = fill(100.0,n)
+new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD;verbose=true)
+u0 = get_species_conc(monomer_conc,nmer)
+println(new_params)
+flush(stdout)
+ode = ODEProblem(nmer, u0, (.00000001,10000), new_params)#; jac = true) #Using the jacobian
+sol = solve(ode,Rodas5P())
+plot(sol,xaxis=:log; lw = 5,legend=:outerright,title="1000 Iters")
+
+
+
+savefig("1000iters.png")
+#end
+
+
+#=
 trimer = get_fc_rn(4)
 
 
@@ -17,9 +43,9 @@ lr=.01
 #deltaG -20
 #params = [:k1 => 50.0, :k2 => .0002, :k3 => 50.0, :k4 => 4.24e-12] # initial rates
 params = [10.0,10.0,10.0]
-iters=100
+iters=10000
 println(optim(trimer,tspan,params,monomer_conc,lr,iters))
-
+=#
 
 
 

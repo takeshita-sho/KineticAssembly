@@ -1,4 +1,66 @@
 using Catalyst
+using OrderedCollections
+using Catalyst.Combinatorics
+
+"""
+creates a ModelingToolkit function-like Symbol
+Credit to @isaacsas for this function
+"""
+function funcsym(S::Symbol, t, args...)
+    S = Symbol(S,args...)
+    (@species $(S)(t))[1]
+end
+
+"""
+Generates rate constants for a reaction network of size n
+"""
+
+function gen_rates(n)
+    ptoids = OrderedDict{Symbol,Int}()
+    for i in 1:(n-1)*2
+        psym = Symbol("k",i)
+        ptoids[psym] = i
+    end
+    return [(@parameters $psym)[1] for psym in keys(ptoids)]
+end
+
+"""
+Generates a reaction network for a fully connected nmer
+"""
+function get_fc_rn(n;t=Catalyst.DEFAULT_IV)
+    rxs=[]
+    cnt = 1
+    rates = gen_rates(n)
+    for size in 2:n
+        for combo in combinations(1:n, size)
+            name = join(["X$i" for i in combo])
+            name = funcsym(Symbol(name),t)
+            for s in combo
+                s1 = funcsym(Symbol("X",s),t)
+                s2 = join(["X$i" for i in setdiff(combo,[s])])
+                s2 = funcsym(Symbol(s2),t)
+                @parameters t
+                push!(rxs,Reaction(rates[cnt],[s1,s2], [name]))
+                push!(rxs,Reaction(rates[cnt+1],[name], [s1,s2]))
+                if length(combo) == 2
+                    break
+                end
+            end
+            
+        end
+        cnt+=2
+    end
+    @named rn = ReactionSystem(rxs,t)
+    return complete(rn)
+end
+
+
+
+
+
+
+
+#=using Catalyst
 using DifferentialEquations
 
 """
@@ -124,6 +186,7 @@ function get_fc_rn(n::Int64)::ReactionSystem
 
     # Evaluate meta-programmed strings describing the species and reactions involved
     # in the network.
+    #println(species_list)
     species_eval_string = get_species_string(species_list)
     eval(Meta.parse(species_eval_string))
     rxs_eval_string = get_fc_rxs_eval_string(species_list)
@@ -132,3 +195,4 @@ function get_fc_rn(n::Int64)::ReactionSystem
     @named rn = ReactionSystem(rxs, t)
     return complete(rn)
 end
+=#

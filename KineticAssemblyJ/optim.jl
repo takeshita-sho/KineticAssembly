@@ -8,19 +8,25 @@ using Flux
 using SciMLSensitivity
 using OptimizationOptimJL
 using Combinatorics: combinations
+include("./ReactionNetwork.jl")
 
 # TODO: Try using lower lr
 # TODO: Try using forwarddiff and reversediff
 
-function optim(rn,tspan,p_init,monomer_conc,lr,iters) begin
+function optim(rn,tspan,p_init,monomer_conc,lr,iters,AD;verbose=false) begin
     k_symbols = unique!(reactionrates(rn))
-    
+    println("k_symbols")
+    println(k_symbols)
     init_rates = get_rates(p_init,k_symbols)
-    u0 = get_species_conc(monomer_conc)
+    u0 = get_species_conc(monomer_conc,rn)
+    println("u0")
+    println(u0)
+    println("params")
+    println(paramsmap(rn))
     
-    println(init_rates)
-    #println("Loss     Yield")
-
+    if verbose
+        println(init_rates)
+    end
     prob = ODEProblem(rn, u0, tspan, init_rates)
 
     #get total yield from end of simulation for loss
@@ -32,7 +38,7 @@ function optim(rn,tspan,p_init,monomer_conc,lr,iters) begin
         #p is a vector of duals
         
         rates = get_rates(p,k_symbols)
-        
+        #println(rates)
         #Remaking ode with updated parameters
         newprob = remake(prob; p=rates)
 
@@ -54,12 +60,15 @@ function optim(rn,tspan,p_init,monomer_conc,lr,iters) begin
         loss = -yield + penalty
         
         #println(loss.value, " " ,yield.value)
+        #println(Sys.total_memory())
+        #peak_memory_bytes = Sys.maxrss()
+        #println("Peak memory usage so far: $(peak_memory_bytes / (1024^2)) MB")
         return loss
 
     end
     
     #optf = OptimizationFunction(loss, Optimization.AutoZygote())
-    optf = OptimizationFunction(loss, Optimization.AutoForwardDiff())
+    optf = OptimizationFunction(loss, AD)
     optprob = OptimizationProblem(optf, p_init)
     
     # TODO: Use various built in optimizers 
@@ -89,33 +98,25 @@ function get_rates(forward_rates::Vector{T},k_symbols; delta_G_kb_T::Float64=-20
     return Dict(zip(k_symbols,rates))
 end
 
-function get_species_conc(monomers)
-    n = length(monomers)
-    species = Vector{Symbol}()
+#Fix this - probably indexing needs to use funsym(symbol)
+function get_species_conc(monomers,rn)
+    t = Catalyst.DEFAULT_IV
+    mon_spec = [funcsym(Symbol("X",i),t) for i in 1:length(monomers)]
+    #n = length(monomers)
+    species = Catalyst.get_species(rn)
     
-    # Generate monomer species names
-    for i in 1:n
-        push!(species, Symbol("X$(i)"))
+    conc_dict = Dict{}()
+    for (i,spec) in enumerate(mon_spec)
+        conc_dict[spec] = monomers[i]
     end
-    
-    # Generate all possible combinations for higher-order species
-    for size in 2:n
-        for combo in combinations(1:n, size)
-            name = join(["X$i" for i in combo])
-            push!(species, Symbol(name))
+    for spec in species
+        if !haskey(conc_dict,spec)
+            conc_dict[spec] = 0.0
         end
     end
     
-    # Initialize dictionary with zeros
-    conc_dict = Dict{Symbol,Float64}()
-    for s in species
-        conc_dict[s] = 0.0
-    end
-    
     # Map provided monomer concentrations
-    for i in 1:n
-        conc_dict[Symbol("X$i")] = monomers[i]
-    end
+    
     
     return conc_dict
 end
