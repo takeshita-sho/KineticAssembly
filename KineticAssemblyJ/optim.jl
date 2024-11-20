@@ -1,5 +1,5 @@
 using Catalyst
-using DifferentialEquations
+using OrdinaryDiffEq, DiffEqCallbacks
 using Optimization
 using OptimizationOptimisers
 using ForwardDiff
@@ -7,22 +7,17 @@ using Zygote
 using Flux
 using SciMLSensitivity
 using OptimizationOptimJL
-using Combinatorics: combinations
 include("./ReactionNetwork.jl")
 
 # TODO: Try using lower lr
 # TODO: Try using forwarddiff and reversediff
 
-function optim(rn,tspan,p_init,monomer_conc,lr,iters,AD;verbose=false) begin
-    k_symbols = unique!(reactionrates(rn))
-    println("k_symbols")
-    println(k_symbols)
+function optim(rn,tspan,p_init,monomer_conc,lr,iters,AD,integrator;verbose=false) begin
+    pmap = Catalyst.paramsmap(rn)
+    pkeys = collect(keys(pmap))
+    k_symbols = sort(pkeys, by = k -> pmap[k])
     init_rates = get_rates(p_init,k_symbols)
     u0 = get_species_conc(monomer_conc,rn)
-    println("u0")
-    println(u0)
-    println("params")
-    println(paramsmap(rn))
     
     if verbose
         println(init_rates)
@@ -43,7 +38,7 @@ function optim(rn,tspan,p_init,monomer_conc,lr,iters,AD;verbose=false) begin
         newprob = remake(prob; p=rates)
 
         #need to save at least at beginning and final time point to get final yield
-        sol = solve(newprob, Rodas5P(); saveat=[tspan[2]], abstol=1e-10, reltol=1e-8, maxiters=1e7)
+        sol = solve(newprob, integrator; saveat=[tspan[2]], abstol=1e-10, reltol=1e-8, maxiters=1e7)#, dtmin=1e-12, force_dtmin=true)
         #sol = Array(solve(newprob, TRBDF2(); saveat=tspan, maxiters=1e7))
         
         #to get final_yield [ABC]final/max_possible[ABC]
@@ -75,7 +70,7 @@ function optim(rn,tspan,p_init,monomer_conc,lr,iters,AD;verbose=false) begin
     # This does not do integration, just Optimization
     # This does not work if I give it an integration algorithm - so not taking derivative
     
-    #sol = solve(optprob, Optimization.LBFGS(); maxiters=10000)
+    #sol = solve(optprob, Optimization.LBFGS(); maxiters=iters)
     sol = solve(optprob, OptimizationOptimisers.Adam(lr); maxiters=iters)
 
     return get_rates(sol.u, k_symbols)

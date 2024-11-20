@@ -1,5 +1,5 @@
 using Catalyst
-using DifferentialEquations
+using OrdinaryDiffEq, DiffEqCallbacks
 using Plots
 using Optimization
 include("./optim.jl")
@@ -8,25 +8,34 @@ include("./ReactionNetwork.jl")
 #This defines the system of the homo rate trimer
 tspan = (0., .1)
 lr=.01
-iters = 1000
-n=3
+iters = 10000
+n=10
 AD = Optimization.AutoForwardDiff()
+integrator = QNDF()
 #for n in 3:10
 println("$(n)mer")
 nmer = get_fc_rn(n)
+println("Generated Reaction Network")
+flush(stdout)
+
 params = fill(10.0,n-1)
 monomer_conc = fill(100.0,n)
-new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD;verbose=true)
-u0 = get_species_conc(monomer_conc,nmer)
-println(new_params)
+new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD,integrator)
+println("Finished Optimization")
 flush(stdout)
+u0 = get_species_conc(monomer_conc,nmer)
+#println(new_params)
+#flush(stdout)
+
+ode_init = ODEProblem(nmer, u0, (.00000001,10000), get_rates(params,unique!(reactionrates(nmer))))
+sol_init = solve(ode_init,integrator)
 ode = ODEProblem(nmer, u0, (.00000001,10000), new_params)#; jac = true) #Using the jacobian
-sol = solve(ode,Rodas5P())
-plot(sol,xaxis=:log; lw = 5,legend=:outerright,title="1000 Iters")
+sol = solve(ode,integrator)
 
-
-
-savefig("1000iters.png")
+plot(sol_init,xaxis=:log; lw = 5,legend=:outerright,title="$(n)mer Init")
+savefig("$(n)mer_init.png")
+plot(sol,xaxis=:log; lw = 5,legend=:outerright,title="$(n)mer $(iters) Iters")
+savefig("$(n)mer$(iters)iters.png")
 #end
 
 
