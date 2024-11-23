@@ -9,7 +9,7 @@ include("./ReactionNetwork.jl")
 tspan = (0., .1)
 lr=.01
 iters = 10000
-n=10
+n=3
 AD = Optimization.AutoForwardDiff()
 integrator = QNDF()
 #for n in 3:10
@@ -20,20 +20,29 @@ flush(stdout)
 
 params = fill(10.0,n-1)
 monomer_conc = fill(100.0,n)
-new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD,integrator)
-println("Finished Optimization")
-flush(stdout)
 u0 = get_species_conc(monomer_conc,nmer)
-#println(new_params)
-#flush(stdout)
-
+#=
 ode_init = ODEProblem(nmer, u0, (.00000001,10000), get_rates(params,unique!(reactionrates(nmer))))
 sol_init = solve(ode_init,integrator)
-ode = ODEProblem(nmer, u0, (.00000001,10000), new_params)#; jac = true) #Using the jacobian
-sol = solve(ode,integrator)
 
 plot(sol_init,xaxis=:log; lw = 5,legend=:outerright,title="$(n)mer Init")
 savefig("$(n)mer_init.png")
+=#
+
+println("Beginning Optimization")
+flush(stdout)
+new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD,integrator)
+println("Finished Optimization")
+flush(stdout)
+
+#println(new_params)
+#flush(stdout)
+
+
+ode = ODEProblem(nmer, u0, (.00000001,10000), new_params)#; jac = true) #Using the jacobian
+sol = solve(ode,integrator)
+
+
 plot(sol,xaxis=:log; lw = 5,legend=:outerright,title="$(n)mer $(iters) Iters")
 savefig("$(n)mer$(iters)iters.png")
 #end

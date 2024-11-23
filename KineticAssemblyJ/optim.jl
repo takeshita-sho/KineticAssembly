@@ -5,11 +5,11 @@ using OptimizationOptimisers
 using ForwardDiff
 using Zygote
 using Flux
-using OrderedCollections
+#using OrderedCollections
 using SciMLSensitivity
 using OptimizationOptimJL
-using SciMLStructures: Tunable, replace, replace!
-using SymbolicIndexingInterface: parameter_values
+#using SciMLStructures: Tunable, replace, replace!
+#using SymbolicIndexingInterface: parameter_values
 include("./ReactionNetwork.jl")
 #parameters()
 
@@ -127,7 +127,7 @@ end
 
 #For fully connected m should be amount of monomers in each species
 #I think C0 should be a different value maybe
-function get_rates(forward_rates::Vector{T},k_symbols; delta_G_kb_T::Float64=-20., C0::Float64=1e6) where T
+function get_rates(forward_rates::AbstractArray{T},k_symbols; delta_G_kb_T::Float64=-20., C0::Float64=1e6) where T
     rates = Dict{Num,T}(k_symbols .=> zeros(Float64, length(k_symbols)))
     #rates = Vector{T}(undef, 2 * length(forward_rates))
     for (m,k_on) in enumerate(forward_rates)
