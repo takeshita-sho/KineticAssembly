@@ -1,133 +1,79 @@
 using Catalyst
 using OrdinaryDiffEq, DiffEqCallbacks
-using Optimization
 using OptimizationOptimisers
-using ForwardDiff
-using Zygote
-using Flux
-#using OrderedCollections
-using SciMLSensitivity
-using OptimizationOptimJL
-#using SciMLStructures: Tunable, replace, replace!
-#using SymbolicIndexingInterface: parameter_values
+using NNlib: relu
 include("./ReactionNetwork.jl")
-#parameters()
 
-#using SymbolicIndexingInterface
-#pgetter = getp(odeprob) #have to insert symbols for rates
-#psetter = setp(odeprob, [:a, :b, :c])
-
-# TODO: Try using lower lr
-# TODO: Try using forwarddiff and reversediff
-
-function optim(rn,tspan,p_init,monomer_conc,lr,iters,AD,integrator;verbose=false) begin
+"""
+Optimization function that optimizes the rate constants of the reaction network
+given initial forward rates and monomer concentrations.
+"""
+function optim(rn::ReactionSystem,tspan::Tuple{Float64,Float64},p_init::Vector{Float64},
+    monomer_conc::Vector{Float64},lr::Float64,iters::Int,AD::AbstractADType,integrator::Any;verbose::Bool=false)
     pmap = Catalyst.paramsmap(rn)
-    pkeys = collect(keys(pmap))
-    k_symbols = sort(pkeys, by = k -> pmap[k])
+    k_symbols = collect(keys(pmap))
+    sort!(k_symbols, by = k -> pmap[k])
     
-    #I think I need to feed in the pmap along with the unorganized key array so
-    # I can return rates in the same order as the keys - there will be duplicate rates
-    #println("getting rates")
-    #flush(stdout)
     init_rates = get_rates(p_init,k_symbols)
-    #println("rates gotten")
-    #println("getting species conc")
-    #flush(stdout)
     u0 = get_species_conc(monomer_conc,rn)
-    #println("species conc gotten")
-    #flush(stdout)
     if verbose
         println(init_rates)
     end
-    #println("Constructing ODE with jacobian")
-    #flush(stdout)
-    #println("u0: ",u0)
-    #println("Equations: ",ModelingToolkit.get_eqs(rn))
-    #println("Unknown: ",ModelingToolkit.get_unknowns(rn))
     prob = ODEProblem(rn, u0, tspan, init_rates; jac = true)
-    #println("prob.u0", prob.u0)
-    #println("prob.p", prob.p)
-    #println("ODE constructed")
-    #flush(stdout)
-    #get total yield from end of simulation for loss
-    function loss(p::AbstractVector{T}, _) where T
-        #Get params from rn struc -> p gives updated params
-
-        #David calculated koff from kon, but changes C0, which shouldnt be done
-        #p is a vector of duals
-        #println("Loss being calculated")
-        rates = get_rates(p,k_symbols)
-        #println(rates)
-        #Remaking ode with updated parameters
-        # newprob = remake(prob; p=rates)
-        #no paramsmap, params, p_init,parameters
-        #println(prob.p)
-        #println(parameters(rn).p)
-        #newprob = remake(prob;p=rates,u0=u0)#replace(Tunable(), prob.p, rates))#p=copy(rates),u0=copy(prob.u0))#
-        newprob = remake(prob;p=rates)#replace(Tunable(), prob.p, values(rates)))
-        #println("p values: ",newprob.p)
-        #println("rates: ",rates)
-        #replace!(Tunable(), newprob.p, rates)#newprob.ps, rates)#does this need to be a vector?
-
-        # Set new parameters
-        #psetter(newprob, rates)
-
-
-        #need to save at least at beginning and final time point to get final yield
-        sol = solve(newprob, integrator; saveat=[tspan[2]], abstol=1e-10, reltol=1e-8, maxiters=1e7)#, dtmin=1e-12, force_dtmin=true)
-        #sol = Array(solve(newprob, TRBDF2(); saveat=tspan, maxiters=1e7))
-        
-        #to get final_yield [ABC]final/max_possible[ABC]
-        yield = sol.u[end][end]
-        
-        
-        #this penalty should work for homo and hetero rates
-        #if rate gets too high then have to take into account diffusion - makes problem PDE not ODE
-        #higher on rate means low energetic barrier so problem becomes more diffusion based
-        penalty = sum(relu.((10*lr).-p)) + sum(relu.(p.-10)) 
-
-        #David seemed to just pass normal MSE
-        
-        loss = -yield + penalty
-        
-        #println(loss.value, " " ,yield.value)
-        #println(Sys.total_memory())
-        #peak_memory_bytes = Sys.maxrss()
-        #println("Peak memory usage so far: $(peak_memory_bytes / (1024^2)) MB")
-        #println("Loss $(loss)")
-        #flush(stdout)
-        return loss
-
-    end
     
-    #println("constructing optimization function")
-    #flush(stdout)
-    #optf = OptimizationFunction(loss, Optimization.AutoZygote())
     optf = OptimizationFunction(loss, AD)
-    #println("optf constructed")
-    #println("Constructing optproblem")
-    #flush(stdout)
-    optprob = OptimizationProblem(optf, p_init)
-    #println("optp constructed")
-    #flush(stdout)
-    # TODO: Use various built in optimizers 
-    # This does not do integration, just Optimization
-    # This does not work if I give it an integration algorithm - so not taking derivative
-    
-    #sol = solve(optprob, Optimization.LBFGS(); maxiters=iters)
-    #println("Solving")
-    #flush(stdout)
+    optprob = OptimizationProblem(optf, p_init, (k_symbols, prob, tspan, integrator, lr))
     sol = solve(optprob, OptimizationOptimisers.Adam(lr); maxiters=iters)
-    #println("Solved")
-    #flush(stdout)
+   
     return get_rates(sol.u, k_symbols)
 end
+
+"""
+Calculates the loss by calculating the back rates from the forward rates to integrate
+the ODE to calculate yield, then applies a penalty to the loss based on the forward rates.
+"""
+function loss(p::AbstractVector{T}, tuple::Any) where T
+    k_symbols, prob, tspan, integrator, lr = tuple
+    #David calculated koff from kon, but changes C0, which shouldnt be done
+    
+    #Remaking ode with updated parameters
+    rates = get_rates(p,k_symbols)
+    
+    
+    newprob = remake(prob;p=deepcopy(rates))
+
+    
+    sol = solve(newprob, integrator; saveat=[tspan[2]], abstol=1e-10, reltol=1e-8, maxiters=1e7)#, dtmin=1e-12, force_dtmin=true)
+    
+    yield = sol.u[end][end]
+    
+    
+    #this penalty should work for homo and hetero rates
+    #if rate gets too high then have to take into account diffusion - makes problem PDE not ODE
+    #higher on rate means low energetic barrier so problem becomes more diffusion based
+    penalty = sum(relu.((10*lr).-p)) + sum(relu.(p.-10)) 
+
+    #David seemed to just pass normal MSE
+    
+    loss = -yield + penalty
+    
+    #println(loss.value, " " ,yield.value)
+    #println(Sys.total_memory())
+    peak_memory_bytes = Sys.maxrss()
+    println("Peak memory usage so far: $(peak_memory_bytes / (1024^2)) MB")
+    #println("Loss $(loss)")
+    flush(stdout)
+    return loss
+
 end
 
+"""
+Calculates the backwards rates based off the forward rates and then returns a dictionary
+mapping the rates to the rate constant variables
+"""
 
 #For fully connected m should be amount of monomers in each species
-#I think C0 should be a different value maybe
-function get_rates(forward_rates::AbstractArray{T},k_symbols; delta_G_kb_T::Float64=-20., C0::Float64=1e6) where T
+function get_rates(forward_rates::AbstractArray{T},k_symbols::Vector{SymbolicUtils.BasicSymbolic{Real}}; delta_G_kb_T::Float64=-20., C0::Float64=1e6) where T
     rates = Dict{Num,T}(k_symbols .=> zeros(Float64, length(k_symbols)))
     #rates = Vector{T}(undef, 2 * length(forward_rates))
     for (m,k_on) in enumerate(forward_rates)
@@ -138,14 +84,18 @@ function get_rates(forward_rates::AbstractArray{T},k_symbols; delta_G_kb_T::Floa
         #rates = [rates; [k_on, k_on * C0 * exp(m * delta_G_kb_T)]]
     end
 
-    return rates#Dict(zip(k_symbols,rates))#rates
+    return rates
 end
 
-#Fix this - probably indexing needs to use funsym(symbol)
-function get_species_conc(monomers,rn)
+"""
+Creates a dictionary mapping the input vector concentrations to the monomers in
+the reaction network and then initializes the rest of the species to 0
+"""
+
+function get_species_conc(monomers::Vector{Float64},rn::ReactionSystem)
     t = Catalyst.DEFAULT_IV
     mon_spec = [funcsym(Symbol("X",i),t) for i in 1:length(monomers)]
-    #n = length(monomers)
+    
     species = Catalyst.get_species(rn)
     conc_dict = Dict{Num,Float64}()
     for (i,spec) in enumerate(mon_spec)
@@ -156,8 +106,6 @@ function get_species_conc(monomers,rn)
             conc_dict[spec] = 0.0
         end
     end
-    
-    # Map provided monomer concentrations
     
     
     return conc_dict
