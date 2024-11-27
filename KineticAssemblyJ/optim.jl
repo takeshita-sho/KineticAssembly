@@ -2,6 +2,7 @@ using Catalyst
 using OrdinaryDiffEq, DiffEqCallbacks
 using OptimizationOptimisers
 using NNlib: relu
+using ReverseDiff
 include("./ReactionNetwork.jl")
 
 """
@@ -40,7 +41,7 @@ function loss(p::AbstractVector{T}, tuple::Any) where T
     rates = get_rates(p,k_symbols)
     
     
-    newprob = remake(prob;p=deepcopy(rates))
+    newprob = remake(prob;p=rates)#deepcopy(rates))
 
     
     sol = solve(newprob, integrator; saveat=[tspan[2]], abstol=1e-10, reltol=1e-8, maxiters=1e7)#, dtmin=1e-12, force_dtmin=true)
@@ -60,7 +61,7 @@ function loss(p::AbstractVector{T}, tuple::Any) where T
     #println(loss.value, " " ,yield.value)
     #println(Sys.total_memory())
     peak_memory_bytes = Sys.maxrss()
-    println("Peak memory usage so far: $(peak_memory_bytes / (1024^2)) MB")
+    #println("Peak memory usage so far: $(peak_memory_bytes / (1024^2)) MB")
     #println("Loss $(loss)")
     flush(stdout)
     return loss

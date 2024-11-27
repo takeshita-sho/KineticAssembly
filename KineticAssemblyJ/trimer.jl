@@ -7,11 +7,16 @@ include("./ReactionNetwork.jl")
 # Can make this automatically create based on input n
 #This defines the system of the homo rate trimer
 tspan = (0., .1)
-lr=.01
-iters = 10000
-n=3
+n = parse(Int,ARGS[1])
+iters = parse(Int,ARGS[2])
+lr= parse(Float64,ARGS[3])
 AD = Optimization.AutoForwardDiff()
-integrator = QNDF()
+if ARGS[4] in ["Reverse","Rev","R","rev","r","reverse"]
+    AD = Optimization.AutoReverseDiff()
+end
+integrator = eval(Meta.parse(ARGS[5]))
+println(AD)
+println(integrator)
 #for n in 3:10
 println("$(n)mer")
 nmer = get_fc_rn(n)
@@ -34,7 +39,7 @@ flush(stdout)
 new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD,integrator)
 println("Finished Optimization")
 flush(stdout)
-
+println("New parameters: ",new_params)
 #println(new_params)
 #flush(stdout)
 
