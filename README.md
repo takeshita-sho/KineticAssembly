@@ -1,3 +1,5 @@
+# Kinetic Assembly Rates Optimizer
+
 This is a tool that optimizes rate constants for an nmer protein of size n.
 
 Dependencies: Catalyst, OrdinaryDiffEq, DiffEqCallbacks, Plots, Optimization, OptimizationOptimisers, NNlib, ReverseDiff
