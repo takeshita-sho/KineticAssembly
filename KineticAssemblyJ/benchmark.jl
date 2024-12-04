@@ -35,7 +35,7 @@ params = fill(10.0,n-1)
 monomer_conc = fill(100.0,n)
 #optim(nmer,tspan,params,monomer_conc,lr,iters,AD,integrator)
 benchmark_result = @btime optim($nmer, $tspan, $params, $monomer_conc, $lr, $iters, $AD,$integrator)
-#println(benchmark_result)
+println(benchmark_result)
 
 flush(stdout)
    # end
