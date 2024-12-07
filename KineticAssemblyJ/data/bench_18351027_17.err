@@ -1,0 +1,2 @@
+/cm/local/apps/slurm/var/spool/job18351045/slurm_script: line 40: 3455462 Killed                  julia +1.10.0 ./benchmark.jl "$nmer_size" 1 .01 r "$integrator"
+slurmstepd: error: Detected 1 oom_kill event in StepId=18351045.batch. Some of the step tasks have been OOM Killed.

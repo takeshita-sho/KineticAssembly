@@ -1,0 +1,4 @@
+┌ Warning: attempting to remove probably stale pidfile
+│   path = "/home/stakesh1/.julia/compiled/v1.10/SimpleNonlinearSolveChainRulesCoreExt/D43wL_Bfyj0.ji.pidfile"
+└ @ FileWatching.Pidfile ~/.julia/juliaup/julia-1.10.0+0.x64.linux.gnu/share/julia/stdlib/v1.10/FileWatching/src/pidfile.jl:244
+slurmstepd: error: *** JOB 18161767 ON c018 CANCELLED AT 2024-11-21T15:57:30 ***

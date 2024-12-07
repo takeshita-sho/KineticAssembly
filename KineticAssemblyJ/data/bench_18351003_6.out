@@ -1,0 +1,25 @@
+270165397504
+226399784960
+AutoReverseDiff()
+QNDF{5, 0, true, Nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}, typeof(OrdinaryDiffEqCore.DEFAULT_PRECS), Val{:forward}, true, nothing, Nothing, Nothing, NTuple{5, Rational{Int64}}, typeof(OrdinaryDiffEqCore.trivial_limiter!)}(Val{5}(), nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}(1//100, 10, 1//5, 1//5, false, true, 0//1), OrdinaryDiffEqCore.DEFAULT_PRECS, nothing, nothing, :linear, (-37//200, -1//9, -823//10000, -83//2000, 0//1), :Standard, OrdinaryDiffEqCore.trivial_limiter!)
+4mer
+Peak memory usage so far: 1445.3671875 MB
+Peak memory usage so far: 1745.390625 MB
+Peak memory usage so far: 1782.9296875 MB
+Peak memory usage so far: 1782.9296875 MB
+Peak memory usage so far: 1782.9296875 MB
+Peak memory usage so far: 2094.86328125 MB
+Peak memory usage so far: 2095.02734375 MB
+Peak memory usage so far: 2095.02734375 MB
+Peak memory usage so far: 2095.02734375 MB
+Peak memory usage so far: 2095.02734375 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+Peak memory usage so far: 2145.96875 MB
+  1.863 s (20062032 allocations: 797.04 MiB)
+Dict{Num, Float64}(k2 => 0.02061153622438558, k1 => 10.0, k6 => 8.75651076269652e-20, k3 => 10.0, k4 => 4.2483542552915886e-11, k5 => 10.0)

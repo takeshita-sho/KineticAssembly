@@ -40,7 +40,7 @@ u0 = get_species_conc(monomer_conc,nmer)
 println("Iteration  Ktri/Kdim  Efficiency")
 
 @parameters k1 k3
-for iters in 1:1000
+for iters in 739:900
     new_params = optim(nmer,tspan,params,monomer_conc,lr,iters,AD,integrator)
     ode = ODEProblem(nmer, u0, (.00000001,10000), new_params)
     sol = solve(ode,integrator)
@@ -48,4 +48,5 @@ for iters in 1:1000
     ratio = new_params[k3]/new_params[k1]
 
     println(iters, " ",ratio," ",efficiency(sol))
+    flush(stdout)
 end

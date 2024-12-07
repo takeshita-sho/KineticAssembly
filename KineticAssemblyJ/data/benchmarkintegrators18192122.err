@@ -1,0 +1,5 @@
+ERROR: LoadError: UndefVarError: `CVODE_BDF` not defined
+Stacktrace:
+ [1] top-level scope
+   @ /scratch4/mjohn218/sho/KineticAssembly/KineticAssemblyJ/benchmark.jl:21
+in expression starting at /scratch4/mjohn218/sho/KineticAssembly/KineticAssemblyJ/benchmark.jl:21

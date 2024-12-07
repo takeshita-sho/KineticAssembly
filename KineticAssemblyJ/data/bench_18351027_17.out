@@ -1,0 +1,6 @@
+270165397504
+226725838848
+AutoReverseDiff()
+TRBDF2{0, true, Nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}, typeof(OrdinaryDiffEqCore.DEFAULT_PRECS), Val{:forward}, true, nothing, typeof(OrdinaryDiffEqCore.trivial_limiter!)}(nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}(1//100, 10, 1//5, 1//5, false, true, 0//1), OrdinaryDiffEqCore.DEFAULT_PRECS, true, :linear, :PI, OrdinaryDiffEqCore.trivial_limiter!)
+7mer
+Peak memory usage so far: 1746.76171875 MB

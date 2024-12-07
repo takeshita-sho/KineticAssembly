@@ -61,8 +61,8 @@ function loss(p::AbstractVector{T}, tuple::Any) where T
     #println(loss.value, " " ,yield.value)
     #println(Sys.total_memory())
     
-    peak_memory_bytes = Sys.maxrss()
-    println("$(peak_memory_bytes / (1024^2)) MB")
+    #peak_memory_bytes = Sys.maxrss()
+    #println("$(peak_memory_bytes / (1024^2)) MB")
     #println("Loss $(loss)")
     #flush(stdout)
     

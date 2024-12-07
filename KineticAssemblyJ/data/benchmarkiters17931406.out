@@ -1,0 +1,20 @@
+270165401600
+230100942848
+Iterations 1
+  8.152 ms (35829 allocations: 3.07 MiB)
+Dict{SymbolicUtils.BasicSymbolic{Real}, Float64}(k[3] => 10.0, k[1] => 10.0, k[2] => 0.02061153622438558, k[4] => 4.2483542552915886e-11)
+Iterations 10
+  20.510 ms (49856 allocations: 7.77 MiB)
+Dict{SymbolicUtils.BasicSymbolic{Real}, Float64}(k[3] => 10.099947124526333, k[1] => 9.902047422939278, k[2] => 0.02040964091534968, k[4] => 4.2908153344701494e-11)
+Iterations 100
+  159.190 ms (206243 allocations: 60.59 MiB)
+Dict{SymbolicUtils.BasicSymbolic{Real}, Float64}(k[3] => 10.971600158580845, k[1] => 8.993311612115827, k[2] => 0.01853659680703128, k[4] => 4.66112442210648e-11)
+Iterations 1000
+  1.458 s (1674956 allocations: 540.32 MiB)
+Dict{SymbolicUtils.BasicSymbolic{Real}, Float64}(k[3] => 10.738489234788997, k[1] => 2.00256086281297, k[2] => 0.004127585576540637, k[4] => 4.562090643601875e-11)
+Iterations 10000
+  12.628 s (15275088 allocations: 4.69 GiB)
+Dict{SymbolicUtils.BasicSymbolic{Real}, Float64}(k[3] => 9.99885948938428, k[1] => 1.7332369142944355, k[2] => 0.0035724675444422037, k[4] => 4.247869725978839e-11)
+Iterations 100000
+  124.929 s (151265089 allocations: 46.28 GiB)
+Dict{SymbolicUtils.BasicSymbolic{Real}, Float64}(k[3] => 9.999193874516493, k[1] => 1.7334974020460554, k[2] => 0.003573004449715056, k[4] => 4.248011784628773e-11)

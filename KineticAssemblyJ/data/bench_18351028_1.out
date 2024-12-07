@@ -1,0 +1,61 @@
+270165405696
+228312838144
+AutoReverseDiff()
+TRBDF2{0, true, Nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}, typeof(OrdinaryDiffEqCore.DEFAULT_PRECS), Val{:forward}, true, nothing, typeof(OrdinaryDiffEqCore.trivial_limiter!)}(nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}(1//100, 10, 1//5, 1//5, false, true, 0//1), OrdinaryDiffEqCore.DEFAULT_PRECS, true, :linear, :PI, OrdinaryDiffEqCore.trivial_limiter!)
+3mer
+Peak memory usage so far: 1386.33984375 MB
+Peak memory usage so far: 1538.58984375 MB
+Peak memory usage so far: 1580.96484375 MB
+Peak memory usage so far: 1580.96484375 MB
+Peak memory usage so far: 1580.96484375 MB
+Peak memory usage so far: 1580.96484375 MB
+Peak memory usage so far: 1580.96484375 MB
+Peak memory usage so far: 1655.66796875 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1709.8125 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+Peak memory usage so far: 1766.59765625 MB
+  568.825 ms (8038795 allocations: 309.84 MiB)
+Dict{Num, Float64}(k2 => 0.02061153622438558, k1 => 10.0, k3 => 10.0, k4 => 4.2483542552915886e-11)

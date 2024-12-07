@@ -1,0 +1,33 @@
+   Resolving package versions...
+  No Changes to `~/.julia/environments/v1.10/Project.toml`
+  No Changes to `~/.julia/environments/v1.10/Manifest.toml`
+Precompiling project...
+[32m  ✓ [39m[90mSoftGlobalScope[39m
+[32m  ✓ [39m[90mVersionParsing[39m
+[32m  ✓ [39m[90mlibsodium_jll[39m
+[32m  ✓ [39m[90mConda[39m
+[32m  ✓ [39m[90mZeroMQ_jll[39m
+[32m  ✓ [39m[90mZMQ[39m
+[32m  ✓ [39m[90mSteadyStateDiffEq[39m
+[32m  ✓ [39mIJulia
+[32m  ✓ [39m[90mNonlinearSolveBase[39m
+[32m  ✓ [39m[90mPlots → IJuliaExt[39m
+[32m  ✓ [39m[90mLinearSolve → LinearSolveFastAlmostBandedMatricesExt[39m
+[32m  ✓ [39m[90mNonlinearSolveBase → NonlinearSolveBaseLineSearchExt[39m
+[32m  ✓ [39m[90mSundials[39m
+[32m  ✓ [39m[90mNonlinearSolveBase → NonlinearSolveBaseDiffEqBaseExt[39m
+[32m  ✓ [39m[90mNonlinearSolve → NonlinearSolveBandedMatricesExt[39m
+[32m  ✓ [39m[90mNonlinearSolveBase → NonlinearSolveBaseBandedMatricesExt[39m
+[32m  ✓ [39m[90mNonlinearSolve → NonlinearSolveNLsolveExt[39m
+[32m  ✓ [39m[90mNonlinearSolveBase → NonlinearSolveBaseLinearSolveExt[39m
+[32m  ✓ [39m[90mNonlinearSolveBase → NonlinearSolveBaseSparseMatrixColoringsExt[39m
+[32m  ✓ [39m[90mDelayDiffEq[39m
+[32m  ✓ [39m[90mStochasticDiffEq[39m
+[32m  ✓ [39m[90mNonlinearSolveFirstOrder[39m
+[32m  ✓ [39m[90mBoundaryValueDiffEqCore[39m
+[32m  ✓ [39m[90mBoundaryValueDiffEqShooting[39m
+[32m  ✓ [39m[90mBoundaryValueDiffEqMIRK[39m
+[32m  ✓ [39m[90mBoundaryValueDiffEqFIRK[39m
+[32m  ✓ [39m[90mBoundaryValueDiffEq[39m
+[32m  ✓ [39mDifferentialEquations
+  28 dependencies successfully precompiled in 139 seconds. 581 already precompiled.

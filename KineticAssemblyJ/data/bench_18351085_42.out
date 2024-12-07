@@ -1,0 +1,13 @@
+270165397504
+224499445760
+AutoForwardDiff()
+KenCarp4{0, true, Nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}, typeof(OrdinaryDiffEqCore.DEFAULT_PRECS), Val{:forward}, true, nothing, typeof(OrdinaryDiffEqCore.trivial_limiter!)}(nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}(1//100, 10, 1//5, 1//5, false, true, 0//1), OrdinaryDiffEqCore.DEFAULT_PRECS, true, :linear, :PI, OrdinaryDiffEqCore.trivial_limiter!)
+8mer
+Peak memory usage so far: 3638.7109375 MB
+Peak memory usage so far: 3638.7109375 MB
+Peak memory usage so far: 3638.7109375 MB
+Peak memory usage so far: 3638.7109375 MB
+Peak memory usage so far: 3638.7109375 MB
+Peak memory usage so far: 3638.7109375 MB
+  36.087 s (212826050 allocations: 16.45 GiB)
+Dict{Num, Float64}(k7 => 10.0, k10 => 3.7200759760208363e-37, k14 => 1.580420060273613e-54, k11 => 10.0, k4 => 4.2483542552915886e-11, k13 => 10.0, k2 => 0.02061153622438558, k9 => 10.0, k12 => 7.667648073722e-46, k1 => 10.0, k6 => 8.75651076269652e-20, k3 => 10.0, k5 => 10.0, k8 => 1.8048513878454152e-28)

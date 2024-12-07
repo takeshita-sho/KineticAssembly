@@ -1,0 +1,21 @@
+270165397504
+218676621312
+AutoForwardDiff()
+Rodas5P{0, true, Nothing, typeof(OrdinaryDiffEqCore.DEFAULT_PRECS), Val{:forward}, true, nothing, typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!)}(nothing, OrdinaryDiffEqCore.DEFAULT_PRECS, OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!)
+6mer
+Peak memory usage so far: 1750.234375 MB
+Peak memory usage so far: 1750.5078125 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+Peak memory usage so far: 1750.515625 MB
+  1.806 s (10671829 allocations: 733.30 MiB)
+Dict{Num, Float64}(k2 => 0.02061153622438558, k9 => 10.0, k7 => 10.0, k10 => 3.7200759760208363e-37, k1 => 10.0, k6 => 8.75651076269652e-20, k3 => 10.0, k4 => 4.2483542552915886e-11, k5 => 10.0, k8 => 1.8048513878454152e-28)

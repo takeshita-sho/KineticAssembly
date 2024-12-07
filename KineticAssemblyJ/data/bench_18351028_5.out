@@ -1,0 +1,25 @@
+270165401600
+226375262208
+AutoReverseDiff()
+TRBDF2{0, true, Nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}, typeof(OrdinaryDiffEqCore.DEFAULT_PRECS), Val{:forward}, true, nothing, typeof(OrdinaryDiffEqCore.trivial_limiter!)}(nothing, NLNewton{Rational{Int64}, Rational{Int64}, Rational{Int64}, Rational{Int64}}(1//100, 10, 1//5, 1//5, false, true, 0//1), OrdinaryDiffEqCore.DEFAULT_PRECS, true, :linear, :PI, OrdinaryDiffEqCore.trivial_limiter!)
+4mer
+Peak memory usage so far: 1321.09375 MB
+Peak memory usage so far: 1766.8828125 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2117.16796875 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+Peak memory usage so far: 2149.72265625 MB
+  2.217 s (24901312 allocations: 974.62 MiB)
+Dict{Num, Float64}(k2 => 0.02061153622438558, k1 => 10.0, k6 => 8.75651076269652e-20, k3 => 10.0, k4 => 4.2483542552915886e-11, k5 => 10.0)
