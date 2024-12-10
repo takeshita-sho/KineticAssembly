@@ -15,7 +15,7 @@ To use this code simply run the optimize.jl script with the following arguments:
   
   &ensp;&ensp;Arg3: learning rate (should be a float)
   
-  &ensp;&ensp;Arg4: Which automatic differentiator to use ("Reverse","Rev","R","rev","r", or "reverse" for AutoReverseDiff() and anything other string for AutoForwardDiff()
+  &ensp;&ensp;Arg4: Which automatic differentiator to use ("Reverse","Rev","R","rev","r", or "reverse" for AutoReverseDiff() and any other string for AutoForwardDiff()
   
   &ensp;&ensp;Arg5: Which integrator to use (Please specify the integrator in julia format. For example if you want to use QNDF, please input "QNDF()")
 ### Example
