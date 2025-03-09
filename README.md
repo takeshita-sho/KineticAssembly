@@ -7,7 +7,7 @@ Dependencies: Catalyst, OrdinaryDiffEq, DiffEqCallbacks, Plots, Optimization, Op
 Julia Version: 1.10.0
 
 ## Simplified script
-To use this code simply run the optimize.jl script with the following arguments:
+To use this code run the optimize.jl script with the following arguments:
   
   &ensp;&ensp;Arg1: nmer size (n should be an integer)
   
