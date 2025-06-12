@@ -2,7 +2,7 @@
 
 This is a tool that optimizes rate constants for an nmer protein of size n.
 
-Dependencies: Catalyst, OrdinaryDiffEq, DiffEqCallbacks, Plots, Optimization, OptimizationOptimisers, NNlib, ReverseDiff
+Dependencies: Catalyst, OrdinaryDiffEq, DiffEqCallbacks, Plots, Optimization, OptimizationOptimisers, NNlib, ReverseDiff, Roots
 
 Julia Version: 1.10.0
 
